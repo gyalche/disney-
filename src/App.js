@@ -3,6 +3,7 @@ import './App.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Login from './components/Login';
 import Header from './components/Header';
+import React  from 'react';
 function App() {
   return (
 
@@ -14,9 +15,6 @@ function App() {
             </Route>
             
           </Routes>
-
-         
-      
     </div>
       </BrowserRouter>
   );
