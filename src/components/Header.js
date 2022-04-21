@@ -1,23 +1,76 @@
 import React from 'react'
 import styled from 'styled-components'
-import { auth, provider } from '../Firebase'
+import { auth } from '../firebase'
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {selectUserName, selectUserPhoto, setUserLoginDetails,
+setUserSignedOut} from "../features/user/userSlice";
+import { useEffect } from 'react';
+
 const Header=(props)=> {
+    const dispatch=useDispatch();
+    const navigate=useNavigate();
+    const userName=useSelector(selectUserName);
+    const userPhoto=useSelector(selectUserPhoto);
 
-    const handleAuth=()=> {
+   
+    useEffect(()=>{
+        auth.onAuthStateChanged((user)=>{
+            if(user){
+                setUser(user);
+                window.location.replace('/home');
+            }
+        })
+    }, [userName])
 
-        auth.signInWithPopup(provider)
+    const handleAuth=(e)=> {
+        e.preventDefault();
+        if(!userName){
+            const provider = new GoogleAuthProvider();
+    
+        signInWithPopup(auth, provider)
             .then((result)=>{
                 console.log(result)
+                setUser(result.user);
             }).catch((error)=>{
-                alert(error.message);
+                // alert(error.message);
+                console.log(error.message);
+            });
+        }
+        else if(userName){
+            auth.signOut()
+                .then(()=>{
+                    dispatch(setUserSignedOut)
+                    window.location.replace('/home')
+                }).catch((error)=>{
+                    alert(error.message)
+                })
+        }
+        
+    };
+
+    const setUser=(user) => {
+        dispatch(
+            setUserLoginDetails({
+                name: user.name,
+                email:user.email,
+                photo:user.photo
             })
-    }
+              
+            
+        );
+    };
   return (
     <Nav>
         <Logo>
             <img src="/images/logo.svg" alt=""></img>
         </Logo>
-
+        {!userName?<Login onClick={handleAuth}>
+        Login
+        </Login>
+        :
+        <>
         <NavMenu>
             <a href="/home">
                 <img src="/images/home-icon.svg" alt=""></img>
@@ -44,13 +97,59 @@ const Header=(props)=> {
                 <span>SERIES</span>
             </a>
         </NavMenu>
-
-        <Login onClick={handleAuth}>
-        <span>Login</span>
-        </Login>
+        <SignOut>
+             <UserImg src={userPhoto} alt={userName} />
+             <DropDown>
+                <span onClick={handleAuth}>SignOut</span>
+             </DropDown>
+        </SignOut>
+        </>
+    }
+        
     </Nav>
   )
 }
+const SignOut=styled.div`
+    position:relative;
+    height:48px;
+    width:48px;
+    display:flex;
+    cursor:pointer;
+    align-items:center;
+    justify-content:center;
+
+    ${UserImg}{
+        border-radius:50%;
+        width:100%;
+        height:100%;
+    }
+
+    &:hover{
+        ${DropDown}{
+            opacity:1;
+            transition-duration:1s;
+        }
+    }
+`
+const DropDown=styled.div`
+    position:absolute;
+    top:48px;
+    background-color:black;
+    right:0;
+    border:1px solid white;
+    border-radius:4px;
+    box-shadow:brown;
+    padding:10px;
+    font-size:14px;
+    letter-spacing:3px;
+    width:100%;
+    opacity:0;
+
+`
+const UserImg=styled.img`
+    height:100%;
+
+`
 const Nav=styled.nav`
     position:fixed;
     top:0;
@@ -167,4 +266,5 @@ transition:all .2s ease 0s;
     border-color:transparent !important;
 }
 `
+
 export default Header;
