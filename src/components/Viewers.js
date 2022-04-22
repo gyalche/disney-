@@ -8,18 +8,33 @@ const Viewers=()=>{
         <Container>
             <Wrap>
                 <img src="/images/viewers-disney.png" alt="" />
+                <video autoplay="true" loop={true} playsInline="true">
+                    <source src="/videos/1564674844-disney.mp4" type="video/mp4" />
+                </video>
             </Wrap>
              <Wrap>
                 <img src="/images/viewers-marvel.png" alt="" />
+                <video autoplay="true" loop="true" playsInline={true} >
+                    <source src="/videos/1564676115-marvel.mp4" type="video/mp4" />
+                </video>
             </Wrap>
              <Wrap>
                 <img src="/images/viewers-national.png" alt="" />
+                <video autoplay="true" loop="true" playsInline="true">
+                    <source src="/videos/1564676296-national-geographic.mp4" type="video/mp4" />
+                </video>
             </Wrap>
              <Wrap>
                 <img src="/images/viewers-pixar.png" alt="" />
+                <video autoplay="true" loop="true" playsInline="true">
+                    <source src="/videos/1564676714-pixar.mp4" type="video/mp4" />
+                </video>
             </Wrap>
              <Wrap>
                 <img src="/images/viewers-starwars.png" alt="" />
+                <video autoplay="true" loop="true" playsInline="true">
+                    <source src="/videos/1608229455-star-wars.mp4" type="video/mp4" />
+                </video>
             </Wrap>
 
         </Container>
@@ -32,7 +47,7 @@ const Container=styled.div`
     display:grid;
     grid-gap:25px;
     // gap:25px;
-    grid-template-columns:repeat(4, minmax(0, 1fr));
+    grid-template-columns:repeat(5, minmax(0, 1fr));
 
     @media only screen and (max-width:768px){
         grid-template-columns:repeat(1, minmax(0, 1fr));
@@ -62,6 +77,24 @@ const Wrap=styled.div`
         z-index: 1;
         top:0;
     }
+
+    video{
+        width:100%;
+        height:100%;
+        position:absolute;
+        top:0px;
+        opacity:0;
+        
+    }
+
+   &:hover{
+       transform:scale(1.05);
+
+       video{
+           opacity:1;
+       }
+
+   }
 
 
 `
