@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import React from 'react';
 import { Link } from 'react-router-dom';
-const Recommends=(props)=>{
+const Trending=(props)=>{
     return(
         <Container>
-            <h4>Recommended for you</h4>
+            <h4>Trending</h4>
             <Content>
                 <Wrap>
                     <Link to="/">
@@ -66,6 +66,7 @@ const Container=styled.div`
 `
 
 const Content=styled.div`
+    margin-top:10px;
     display:grid;
     grid-gap:25px;
     grid-template-columns:repeat(4, minmax(0, 1fr));
@@ -74,4 +75,4 @@ const Content=styled.div`
         grid-template-columns:repeat(2, minmax(0, 1fr))
     }
 `
-export default Recommends;
+export default Trending;
